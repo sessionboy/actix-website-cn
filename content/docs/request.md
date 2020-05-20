@@ -1,12 +1,12 @@
 ---
-title: Requests
+title: Requests 请求
 menu: docs_advanced
 weight: 200
 ---
 
-# Content Encoding
+# Content Encoding 内容编码
 
-Actix-web automatically *decompresses* payloads. The following codecs are supported:
+Actix-web自动解压payloads。支持以下编解码器：
 
 * Brotli
 * Chunked
@@ -15,65 +15,58 @@ Actix-web automatically *decompresses* payloads. The following codecs are suppor
 * Deflate
 * Identity
 * Trailers
-* EncodingExt
+* EncodingExt  
 
-If request headers contain a `Content-Encoding` header, the request payload is decompressed
-according to the header value. Multiple codecs are not supported, i.e: `Content-Encoding: br, gzip`.
+如果headers包含`Content-Encoding` header，则将根据header值对请求payload进行解压缩。不支持多种编解码器，即：`Content-Encoding: br, gzip`。
 
 # JSON Request
 
-There are several options for json body deserialization.
+json body反序列化有几种选择。
 
-The first option is to use *Json* extractor. First, you define a handler function
-that accepts `Json<T>` as a parameter, then, you use the `.to()` method for registering
-this handler. It is also possible to accept arbitrary valid json object by
-using `serde_json::Value` as a type `T`.
+第一种选择是使用*Json*提取器。
+首先，您定义一个接受`Json<T>`作为参数的handler函数，然后，使用`.to()`方法注册该handler函数。
+通过使用`serde_json::Value`作为类型`T`也可以接受任意有效的json对象。
 
 {{< include-example example="requests" file="main.rs" section="json-request" >}}
 
-You may also manually load the payload into memory and then deserialize it.
+您也可以将payload手动加载到内存中，然后反序列化。
 
-In the following example, we will deserialize a *MyObj* struct. We need to load the request
-body first and then deserialize the json into an object.
+在下面的示例中，我们将反序列化*MyObj*结构。我们需要先加载请求body，然后将json反序列化为一个对象。
 
 {{< include-example example="requests" file="manual.rs" section="json-manual" >}}
 
-> A complete example for both options is available in [examples directory][examples].
+> 示例目录中提供了这两个选项的[完整示例][examples]。
 
-# Chunked transfer encoding
+# 分块传输编码
 
-Actix automatically decodes *chunked* encoding. The [`web::Payload`][payloadextractor]
-extractor already contains the decoded byte stream. If the request payload is compressed
-with one of the supported compression codecs (br, gzip, deflate), then the byte stream
-is decompressed.
+Actix自动解码*chunked*(分块)编码。
+[`web::Payload`][payloadextractor]提取器已经包含解码后的字节流。
+如果使用支持的压缩编解码器（br，gzip，deflate）之一压缩请求payload，则将字节流解压缩。
 
-# Multipart body
+# Multipart body 多body
 
-Actix-web provides multipart stream support with an external crate, [`actix-multipart`][multipartcrate].
+Actix-web通过外部crate, [`actix-multipart`][multipartcrate]提供multipart stream(流)支持。
 
-> A full example is available in the [examples directory][multipartexample].
+> 示例目录中提供了[完整的示例][multipartexample]。
 
 # Urlencoded body
 
-Actix-web provides support for *application/x-www-form-urlencoded* encoded bodies with
-the [`web::Form`][formencoded] extractor which resolves to the deserialized instance. The
-type of the instance must implement the `Deserialize` trait from *serde*.
+Actix-web使用[`web::Form`][formencoded]提取程序为反序列化实例解析的*application/x-www-form-urlencoded*编码bodies提供支持。实例的类型必须实现*serde*的`Deserialize` trait。
 
-The *UrlEncoded* future can resolve into an error in several cases:
+*UrlEncoded*的将来可能会在多种情况下解决错误：
 
-* content type is not `application/x-www-form-urlencoded`
-* transfer encoding is `chunked`.
-* content-length is greater than 256k
-* payload terminates with error.
+* content type 不是 `application/x-www-form-urlencoded`
+* transfer encoding 是 `chunked`.
+* content-length 大于 256k
+* payload 因错误而终止。
 
 {{< include-example example="requests" file="urlencoded.rs" section="urlencoded" >}}
 
-# Streaming request
+# Streaming request 流请求
 
-*HttpRequest* is a stream of `Bytes` objects. It can be used to read the request
-body payload.
+*HttpRequest*是`Bytes`对象的流。它可用于读取请求body payload。
 
-In the following example, we read and print the request payload chunk by chunk:
+在以下示例中，我们逐块读取和打印请求的payload：
 
 {{< include-example example="requests" file="streaming.rs" section="streaming" >}}
 

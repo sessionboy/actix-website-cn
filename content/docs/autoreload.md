@@ -1,47 +1,41 @@
 ---
-title: Autoreloading
+title: 热更新
 menu: docs_patterns
 weight: 1000
 ---
 
-# Auto-Reloading Development Server
+# 自动重新加载开发服务器
 
-During development it can be very handy to have cargo automatically recompile the code
-on change.  This can be accomplished by using [cargo-watch][cargowatch].  Because an
-actix app will typically bind to a port for listening for incoming HTTP requests it makes
-sense to combine this with the [listenfd][listenfd] crate and the [systemfd][systemfd]
-utility to ensure the socket is kept open while the app is compiling and reloading.
+在开发过程中，让cargo在更改时自动重新编译代码会非常方便。
+这可以通过使用[cargo-watch][cargowatch]来完成。
+因为actix应用程序通常将绑定到端口以侦听传入的HTTP请求，所以将其与[listenfd][listenfd] crate和[systemfd][systemfd]实用程序结合使用以确保socket在应用程序编译和重新加载时保持打开状态是有意义的。
 
-`systemfd` will open a socket and pass it to `cargo-watch` which will watch for
-changes and then invoke the compiler and run your actix app.  The actix app
-will then use `listenfd` to pick up the socket that `systemfd` opened.
+`systemfd`将打开一个socket，并将其传递给`cargo-watch`，它将监听更改，然后调用编译器并运行actix应用。然后，actix应用程序将使用`listenfd`来拾取`systemfd`打开的socket。
 
-## Binaries Necessary
+## Binaries Necessary 必要的二进制文件
 
-For an automatic reloading experience you need to install `cargo-watch` and
-`systemfd`.  Both are written in Rust and can be installed with `cargo install`:
+为了获得热更新的体验，您需要安装`cargo-watch`和`systemfd`。两者都是用Rust编写的，可以与`cargo install`一起安装：
 
 ```
 cargo install systemfd cargo-watch
 ```
 
-## Code Changes
+## 代码变更
 
-Additionally you need to slightly modify your actix app so that it can pick up
-an external socket opened by `systemfd`.  Add the listenfd dependency to your app:
+另外，您需要稍微修改一下actix应用程序，以便它可以使用`systemfd`打开的外部socket。将`listenfd`依赖项添加到您的应用程序：
 
 ```ini
 [dependencies]
 listenfd = "0.3"
 ```
 
-Then modify your server code to only invoke `bind` as a fallback:
+然后修改您的服务器代码以仅调用`bind`作为fallback：
 
 {{< include-example example="autoreload" file="main.rs" section="autoreload" >}}
 
-## Running the Server
+## 运行服务器
 
-To now run the development server invoke this command:
+现在要运行开发服务器，请调用以下命令：
 
 ```
 systemfd --no-pid -s http::3000 -- cargo watch -x run

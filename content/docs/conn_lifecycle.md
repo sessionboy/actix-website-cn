@@ -1,38 +1,37 @@
 ---
-title: Connection Lifecycle
+title: 连接生命周期
 menu: docs_architecture
 weight: 1030
 ---
 
 
-# Architecture overview
+# 架构概述
 
-After Server has started listening to all sockets, [`Accept`][Accept] and [`Worker`][Worker] are two main loops responsible for processing incoming client connections.
+Server开始侦听所有sockets后，[`Accept`][Accept]和[`Worker`][Worker]是两个主要loops，负责处理传入的客户端连接(connections)。
 
-Once connection accepted Application level protocol processing happens in a protocol specific [`Dispatcher`][Dispatcher] loop spawned from [`Worker`][Worker].
+一旦接受连接，应用程序级别的协议处理就会在从[`Worker`][Worker]派生的协议特定的[`Dispatcher`][Dispatcher] loop中发生。
 
-    Please note, below diagrams are outlining happy-path scenarios only.
+    请注意，以下图表仅概述了happy-path方案。
 
 ![](/img/diagrams/connection_overview.svg)
 
-## Accept loop in more detail
+## 更详细的Accept loop
 
 ![](/img/diagrams/connection_accept.svg)
 
-Most of code implementation resides in [`actix-server`][server] crate for struct [`Accept`][Accept].
+大多数代码实现都驻留在结构[`Accept`][Accept]的[`actix-server`][server] crate中。
 
-## Worker loop in more detail
+## 更详细的Worker loop
 
 ![](/img/diagrams/connection_worker.svg)
 
-Most of code implementation resides in [`actix-server`][server] crate for struct [`Worker`][Worker].
+大多数代码实现都驻留在struct [`Worker`][Worker]的[`actix-server`][server] crate中。
 
-## Request loop roughly
+## 大致的Request loop
 
 ![](/img/diagrams/connection_request.svg)
 
-Most of code implementation for request loop resides in [`actix-web`][web] and [`actix-http`][http] crates.
-
+request loop的大多数代码实现都驻留在[`actix-web`][web] 和 [`actix-http`][http] crates中。
 
 [server]: https://crates.io/crates/actix-server
 [web]: https://crates.io/crates/actix-web

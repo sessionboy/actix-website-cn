@@ -4,19 +4,17 @@ menu: docs_proto
 weight: 240
 ---
 
-Actix-web supports WebSockets with the `actix-web-actors` crate. It is possible to convert a
-request's `Payload` to a stream of [*ws::Message*][message] with a [*web::Payload*][payload]
-and then use stream combinators to handle actual messages, but it is simpler to handle
-websocket communications with an http actor.
+Actix-web支持带`actix-web-actors` crate的WebSocket。
+可以使用[*web::Payload*][payload]将请求的`Payload`转换为[*ws::Message*][message]流，然后使用流组合器来处理实际消息，但处理与http actor的websocket通信更简单。
 
-The following is an example of a simple websocket echo server:
+以下是一个简单的websocket echo服务器的示例：
 
 {{< include-example example="websockets" file="main.rs" section="websockets" >}}
 
-> A simple websocket echo server example is available in the [examples directory][examples].
+> [示例目录][examples]中提供了一个简单的websocket echo服务器示例。
 
-> An example chat server with the ability to chat over a websocket or tcp connection
-> is available in [websocket-chat directory][chat]
+
+> [websocket-chat directory][chat]中提供了一个示例聊天服务器，可以通过websocket或tcp连接进行聊天
 
 [message]: https://docs.rs/actix-web-actors/2/actix_web_actors/ws/enum.Message.html
 [payload]: https://docs.rs/actix-web/2/actix_web/web/struct.Payload.html

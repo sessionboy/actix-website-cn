@@ -1,114 +1,108 @@
 ---
-title: Application
+title: 应用
 menu: docs_basics
 weight: 140
 ---
 
-# Writing an Application
+# 写一个应用
 
-`actix-web` provides various primitives to build web servers and applications with Rust.
-It provides routing, middlewares, pre-processing of requests, post-processing of
-responses, etc.
+`actix-web`提供了多种原语以使用Rust构建Web服务器和应用程序。
+它提供路由，中间件，请求的预处理，响应的后处理等。
 
-All `actix-web` servers are built around the [`App`][app] instance.  It is used for
-registering routes for resources and middlewares.  It also stores application
-state shared across all handlers within same scope.
+所有`actix-web`服务器均围绕[`App`][app]实例构建。
+它用于注册resources(资源)和middlewares(中间件)的路由。
+它还存储同一scope(范围/作用域)内所有处理程序之间共享的应用程序状态。
 
-An application's [`scope`][scope] acts as a namespace for all routes, i.e. all routes for a
-specific application scope have the same url path prefix. The application prefix always
-contains a leading "/" slash.  If a supplied prefix does not contain leading slash,
-it is automatically inserted.  The prefix should consist of value path segments.
+应用程序的[`scope`][scope]充当所有路由的命名空间，即特定应用程序作用域的所有路由都具有相同的url路径前缀。
+应用程序前缀始终包含一个“/”斜杠。
+如果提供的前缀不包含斜杠，则会自动将其插入。
+前缀应包含值路径段。
 
-> For an application with scope `/app`,
-> any request with the paths `/app`, `/app/`, or `/app/test` would match;
-> however, the path `/application` would not match.
+> 对于范围为`/app`的应用程序
+> 路径为`/app`, `/app/`, 或 `/app/test`的任何请求都将匹配；
+> 但是，路径`/application`不匹配。
 
 {{< include-example example="application" file="app.rs" section="setup" >}}
 
-In this example, an application with the `/app` prefix and a `index.html` resource
-are created. This resource is available through the `/app/index.html` url.
+在此示例中，将创建一个带有`/app`前缀和`index.html` resource(资源)的应用程序。
+该resource可通过`/app/index.html`网址获得。
 
-> For more information, check the [URL Dispatch][usingappprefix] section.
+> 有关更多信息，请查看[URL Dispatch][usingappprefix]部分。
 
-## State
+## State 状态
 
-Application state is shared with all routes and resources within the same scope. State
-can be accessed with the [`web::Data<T>`][data] extractor where `T` is type of state. State is
-also available for middlewares.
+应用程序状态与同一scope(范围)内的所有路由和resources(资源)共享。
+可以使用[`web::Data<T>`][data]提取器访问状态，其中`T`是状态类型。
+状态也可用于中间件。
 
-Let's write a simple application and store the application name in the state:
+让我们编写一个简单的应用程序，并将应用程序名称存储在以下状态：
 
 {{< include-example example="application" file="state.rs" section="setup" >}}
 
-and pass in the state when initializing the App, and start the application:
+并在初始化应用程序时传递状态，然后启动应用程序：
 
 {{< include-example example="application" file="state.rs" section="start_app" >}}
 
-Any number of state types could be registered within application.
+可以在应用程序中注册任意数量的状态类型。
 
-## Shared Mutable State
+## Shared Mutable State 共享可变状态
 
-`HttpServer` accepts an application factory rather than an application instance.
-Http server constructs an application instance for each thread, thus application data must be
-constructed multiple times. If you want to share data between different threads, a shareable
-object should be used, e.g. Send + Sync.
+`HttpServer`接受应用程序的factory(工厂函数)而不是应用程序实例。
+Http服务器为每个线程构造一个应用程序实例，因此必须多次构造应用程序数据。
+如果要在不同线程之间共享数据，则应使用可共享对象，例如
+`Send + Sync`。
 
-Internally, [`web::Data`][data] uses Arc. Thus, in order to avoid double Arc, we should create our Data before registering it using [`App::app_data()`][appdata].
+在内部，[`web::Data`][data]使用`Arc`。
+因此，为了避免double Arc，我们应该在使用[`App::app_data()`][appdata]注册数据之前创建数据。
 
-In the following example, we will write an application with mutable, shared state. First, we define our state and create our handler:
+在下面的示例中，我们将编写一个具有可变共享状态的应用程序。
+首先，我们定义状态并创建处理程序：
 
 {{< include-example example="application" file="state.rs" section="setup_mutable" >}}
 
-and register the data in an App:
+并在应用程序中注册数据：
 
 {{< include-example example="application" file="state.rs" section="make_app_mutable" >}}
 
-## Using an Application Scope to Compose Applications
+## 使用应用程序的Scope来编写应用程序
 
-The [`web::scope()`][webscope] method allows to set a specific application prefix.  This scope represents
-a resource prefix that will be prepended to all resource patterns added by the resource
-configuration. This can be used to help mount a set of routes at a different location
-than the included callable's author intended while still maintaining the same resource names.
+[`web::scope()`][webscope]方法允许设置特定的应用程序前缀。
+此scope表示资源前缀，该前缀将附加到资源配置添加的所有资源patterns(模式)中。
+这有利于路由的配置。
 
-For example:
+例如:
 
 {{< include-example example="application" file="scope.rs" section="scope" >}}
 
-In the above example, the *show_users* route will have an effective route pattern of
-*/users/show* instead of */show* because the application's scope argument will be prepended
-to the pattern. The route will then only match if the URL path is */users/show*,
-and when the [`HttpRequest.url_for()`][urlfor] function is called with the route name show_users,
-it will generate a URL with that same path.
+在上面的示例中，*show_users*路由的有效路由模式为*/users/show*，而不是*/show*，因为应用程序的scope参数将添加到该模式之前。
+然后，仅当URL路径为*/users/show*时，路由才会匹配，并且使用路由名称show_users调用[`HttpRequest.url_for()`][urlfor]函数时，它将生成具有相同路径的URL。
 
-## Application guards and virtual hosting
+## 应用程序guards(守卫)和虚拟主机
 
-You can think of a guard as a simple function that accepts a *request* object reference
-and returns *true* or *false*. Formally, a guard is any object that implements the
-[`Guard`][guardtrait] trait. Actix-web provides several guards, you can check
-[functions section][guardfuncs] of api docs.
+您可以将guard视为可以接受*request*对象引用并返回*true* 或 *false*的简单函数。
+形式上，guard是实现[`Guard`][guardtrait] trait的任何对象。
+`Actix-web`提供了几种guards，您可以检查api文档的[functions section][guardfuncs]。
 
-One of the provided guards is [`Header`][guardheader], it can be used as application's
-filter based on request's header information.
+[`Header`][guardheader]提供了一种guards，它可以根据请求的header作为应用程序的过滤器。
 
 {{< include-example example="application" file="vh.rs" section="vh" >}}
 
-# Configure
+# Configure 配置
 
-For simplicity and reusability both [`App`][appconfig] and [`web::Scope`][webscopeconfig] provide the `configure` method.
-This function is useful for moving parts of configuration to a different module or even
-library. For example, some of the resource's configuration could be moved to different
-module.
+为了简单和可重用，[`App`][appconfig] 和 [`web::Scope`][webscopeconfig]都提供了`configure`方法。
+该函数对于将配置的部分移动到其他模块甚至库中很有用。
+例如，某些resource的配置可以移至其他模块。
 
 {{< include-example example="application" file="config.rs" section="config" >}}
 
-The result of the above example would be:
+上面示例的结果将是：
 
 ```
 /         -> "/"
 /app      -> "app"
 /api/test -> "test"
 ```
-Each [`ServiceConfig`][serviceconfig] can have it's own `data`, `routes`, and `services`.
+每个[`ServiceConfig`][serviceconfig]可以拥有自己的`data`, `routes`, 和 `services`。
 
 [usingappprefix]: /docs/url-dispatch/index.html#using-an-application-prefix-to-compose-applications
 [stateexample]: https://github.com/actix/examples/blob/master/state/src/main.rs

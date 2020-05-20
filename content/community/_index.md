@@ -1,20 +1,13 @@
 ---
-title: Community
-description: The best things in life are to be shared
+title: 社区
+description: 生活中最好的事情要分享
 ---
 
-# Join us
+# 加入我们
 
-Want to talk to others about questions?  The [actix gitter
-channel](https://gitter.im/actix/actix) or
-[reddit community](https://www.reddit.com/r/actix/)
-are your best starting point.
+是否想与其他人谈论问题？ actix的[actix gitter
+channel](https://gitter.im/actix/actix)或[reddit community](https://www.reddit.com/r/actix/)是您最好的起点。
 
-If you think you found a bug it's best to go to the
-[github](https://github.com/actix) directly.  There are two repositories
-that you might want to report against.  [actix](https://github.com/actix/actix)
-for issues with the actor framework or [actix-web](https://github.com/actix/actix-web)
-for the high level web framework.
+如果您认为自己发现了错误，则最好直接转到[github](https://github.com/actix)。您可能要报告两个存储库。使用actix框架问题的[actix](https://github.com/actix/actix)或用于高级Web框架的[actix-web](https://github.com/actix/actix-web)。
 
-We're a welcoming community so don't be afraid to engage.  Interactions
-are [governed by our code of conduct](coc/).
+我们是一个热情的社区，所以不要害怕参与。互动受[我们的行为准则约束](coc/)。

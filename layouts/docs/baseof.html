@@ -15,12 +15,12 @@
     <div class="col-md-3">
 
       <button class="btn doctoggle" type="button" data-toggle="collapse" data-target="#collapsing-docnav" aria-expanded="false" aria-controls="collapsing-docnav">
-        Toggle navigation
+        切换导航
       </button>
 
       <nav class="leftnav collapse show" id="collapsing-docnav">
         <div class="" id="">
-          <h5>Introduction</h5>
+          <h5>介绍</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_intro }}
@@ -31,7 +31,7 @@
             </ul>
           </div>
 
-          <h5>Basics</h5>
+          <h5>基础</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_basics }}
@@ -42,7 +42,7 @@
             </ul>
           </div>
 
-          <h5>Advanced</h5>
+          <h5>高级</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_advanced }}
@@ -53,7 +53,7 @@
             </ul>
           </div>
 
-          <h5>Protocols</h5>
+          <h5>Protocols 协议</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_proto }}
@@ -64,7 +64,7 @@
             </ul>
           </div>
 
-          <h5>Patterns</h5>
+          <h5>Patterns 模式</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_patterns }}
@@ -75,7 +75,7 @@
             </ul>
           </div>
 
-          <h5>Diagrams</h5>
+          <h5>Diagrams 图表</h5>
           <div>
             <ul class="nav">
               {{ range .Site.Menus.docs_architecture }}
@@ -86,7 +86,7 @@
             </ul>
           </div>
 
-          <h5>API Documentation</h5>
+          <h5>API 文档</h5>
           <div>
             <ul class="nav">
               <li><a href="https://docs.rs/actix" target="view_window">actix <span class="fa fa-external-link"></span></a></li>
@@ -101,7 +101,7 @@
       <div class="actix-content">
         {{ block "main" . }}{{ end }}
         <div class="github-edit">
-            <a class="fa fa-github" href="https://github.com/actix/actix-website/tree/master/content/{{ .File.Path }}"> Edit on GitHub</a>
+            <a class="fa fa-github" href="https://github.com/actix/actix-website/tree/master/content/{{ .File.Path }}"> 在GitHub上编辑</a>
         </div>
 
         {{ if eq (len .Pages) 0 }}
@@ -113,7 +113,7 @@
         {{ .Scratch.Set "CurrentWeight" .Weight }}
 
         {{ range first 1 (where (.Scratch.Get "Docs") ".Weight" ">" (.Scratch.Get "CurrentWeight")) }}
-            <div class="actix-next"><b>Next up</b>: <a href = {{ .RelPermalink }}>{{ .Title }}</a></div>
+            <div class="actix-next"><b>接下来</b>: <a href = {{ .RelPermalink }}>{{ .Title }}</a></div>
         {{ end }}
       </div>
     </div>

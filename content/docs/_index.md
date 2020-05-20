@@ -1,25 +1,19 @@
 ---
-title: Documentation
-description: Guiding you through building apps with actix
+title: 文档
+description: 指导您使用actix构建应用
 menu:
   docs_intro:
-    name: Welcome
+    name: 欢迎
 weight: 10
 ---
 
-# Welcome to Actix
+# 欢迎来到Actix
 
-Actix is your door to developing web services with Rust and this documentation
-is going to guide you.
+Actix是您使用Rust开发Web服务的大门，本文档将为您提供指导。
 
-This documentation currently covers mostly the `actix-web` part which is the high level
-web framework previously built on top of the `actix` actor framework and the [Tokio][tokio]
-async IO system.  This is the part that is from an API stability point of view the most stable.
+该文档当前主要涵盖了`actix-web`一部分，它是先前在`actixactor`框架和[Tokio][tokio]异步IO系统之上构建的高级Web框架。从API稳定性的角度来看，这是最稳定的部分。
 
-If you haven't used `actix-web` yet it's best to start with the [getting started
-guide][gettingstarted].  If you already know your ways around and you need
-specific information you might want to read the [actix-web API docs][actixwebdocs]
-(or the lower level [actix API docs][actixdocs]).
+如果您还没有使用过`actix-web`，最好先从[入门指南][gettingstarted]开始。如果您已经了解了各种方法，并且需要特定的信息，则可能需要阅读[actix-web API文档][actixwebdocs] （或较低级别的[actix API文档][actixdocs]）。
 
 [gettingstarted]: ./getting-started
 [actixwebdocs]: https://docs.rs/actix-web

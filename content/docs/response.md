@@ -1,27 +1,22 @@
 ---
-title: Responses
+title: Responses 响应
 menu: docs_advanced
 weight: 210
 ---
 
 # Response
 
-A builder-like pattern is used to construct an instance of `HttpResponse`.  `HttpResponse`
-provides several methods that return a `HttpResponseBuilder` instance, which implements
-various convenience methods for building responses.
+类似于构建器的模式用于构造`HttpResponse`的实例。 `HttpResponse`提供了几种返回`HttpResponseBuilder`实例的方法，该实例实现了用于构建responses的各种便捷方法。
 
-> Check the [documentation][responsebuilder] for type descriptions.
+> 检查[文档][responsebuilder]以获取类型说明。 
 
-The methods `.body`, `.finish`, and `.json` finalize response creation and return a
-constructed *HttpResponse* instance. If this methods is called on the same builder
-instance multiple times, the builder will panic.
+`.body`, `.finish`, 和 `.json`方法完成response创建并返回构造的`HttpResponse`实例。如果在同一构建器实例上多次调用此方法，则构建器将出现panic。
 
 {{< include-example example="responses" file="main.rs" section="builder" >}}
 
-# Content encoding
+# Content encoding 内容编码
 
-Actix-web can automatically *compresses* payloads with the [*Compress middleware*][compressmidddleware].
-The following codecs are supported:
+Actix-web可以使用[Compress中间件][compressmidddleware]自动压缩payloads。支持以下编解码器：
 
 * Brotli
 * Gzip
@@ -30,44 +25,36 @@ The following codecs are supported:
 
 {{< include-example example="responses" file="compress.rs" section="compress" >}}
 
-Response payload is compressed based on the *encoding* parameter from the
-`middleware::BodyEncoding` trait.  By default, `ContentEncoding::Auto` is used. If
-`ContentEncoding::Auto` is selected, then the compression depends on the request's
-`Accept-Encoding` header.
+根据来自`middleware::BodyEncoding` trait的编码参数压缩Response payload。
+默认情况下，使用`ContentEncoding::Auto`。
+如果选择`ContentEncoding::Auto`，则压缩取决于请求的`Accept-Encoding` header。
 
-> `ContentEncoding::Identity` can be used to disable compression.
-> If another content encoding is selected, the compression is enforced for that codec.
+> `ContentEncoding::Identity`可用于禁用压缩。
+> 如果选择了其他content encoding，则将对该编码解码器强制执行压缩。
 
-For example, to enable `brotli` for a single handler use `ContentEncoding::Br`:
+例如，要为单个处理程序启用`brotli`，请使用`ContentEncoding::Br`：
 
 {{< include-example example="responses" file="brotli.rs" section="brotli" >}}
 
-or for the entire application:
+或对于整个应用程序：
 
 {{< include-example example="responses" file="brotli_two.rs" section="brotli-two" >}}
 
-In this case we explicitly disable content compression by setting content encoding to
-an `Identity` value:
+在这种情况下，我们通过将content encoding设置为`Identity`值来显式禁用content压缩：
 
 {{< include-example example="responses" file="identity.rs" section="identity" >}}
 
-When dealing with an already compressed body (for example when serving assets),
-set the content encoding to `Identity` to avoid compressing the already compressed
-data and set the `content-encoding` header manually:
+在处理已压缩的body时（例如，在提供assets时），请将content encoding设置为`Identity`以避免压缩已压缩的数据，并手动设置`content-encoding` header：
 
 {{< include-example example="responses" file="identity_two.rs" section="identity-two" >}}
 
-Also it is possible to set default content encoding on application level, by
-default `ContentEncoding::Auto` is used, which implies automatic content compression
-negotiation.
+也可以在应用程序级别设置默认的content encoding，默认情况下使用`ContentEncoding::Auto`，这意味着自动进行content压缩协商。
 
 {{< include-example example="responses" file="auto.rs" section="auto" >}}
 
 # JSON Response
 
-The `Json` type allows to respond with well-formed JSON data: simply return a value of
-type `Json<T>` where `T` is the type of a structure to serialize into *JSON*.
-The type `T` must implement the `Serialize` trait from *serde*.
+Json类型允许使用格式正确的JSON数据进行响应：只需返回`Json<T>`类型的值，其中`T`是要序列化为JSON的结构的类型。类型`T`必须实现serde的`Serialize`特性。
 
 {{< include-example example="responses" file="json_resp.rs" section="json-resp" >}}
 

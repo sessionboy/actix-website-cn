@@ -1,12 +1,13 @@
 ---
-title: Http Server Initialization
+title: Http服务器初始化
 menu: docs_architecture
 weight: 1020
 ---
 
-## Architecture overview
+## 架构概述
 
-Below is a diagram of HttpServer initalization, which happens on the following code
+下面是HttpServer初始化的示意图，它发生在以下代码上
+
 ```rust
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {

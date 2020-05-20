@@ -1,8 +1,8 @@
 [home]
-other = "Home"
+other = "主页"
 [docs]
-other = "Documentation"
+other = "文档"
 [community]
-other = "Community"
+other = "社区"
 [code]
-other = "Code"
+other = "代码"

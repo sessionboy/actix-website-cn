@@ -7,7 +7,7 @@ defaultContentLanguageInSubdir = false
 enableRobotsTXT = true
 enableMissingTranslationPlaceholders = true
 DefaultContentLanguage = "en"
-baseURL = "https://actix.rs"
+baseURL = "https://actix-web-cn.netlify.app"
 
 [languages.en]
   languageCode = "en-US"
